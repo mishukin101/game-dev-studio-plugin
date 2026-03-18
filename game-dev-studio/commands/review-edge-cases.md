@@ -1,6 +1,6 @@
 ---
 name: review-edge-cases
-description: "Walk every branching path and boundary condition in content, report only unhandled edge cases."
+description: "모든 분기 경로와 경계 조건을 탐색하여 처리되지 않은 엣지 케이스만 보고합니다."
 ---
 
 # Edge Case Hunter Review

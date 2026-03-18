@@ -1,6 +1,6 @@
 ---
 name: party-mode
-description: "Orchestrate group discussions between all Game Dev Studio agents, enabling natural multi-agent conversations."
+description: "모든 Game Dev Studio 에이전트 간의 그룹 토론을 조율하는 멀티 에이전트 대화를 시작합니다."
 ---
 
 Follow the instructions in the party-mode workflow.

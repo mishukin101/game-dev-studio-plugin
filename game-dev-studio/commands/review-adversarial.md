@@ -1,6 +1,6 @@
 ---
 name: review-adversarial
-description: "Perform a Cynical Review and produce a findings report. Skeptical analysis of any content."
+description: "콘텐츠에 대한 비판적 리뷰를 수행하고 최소 10개의 문제점을 찾아 보고합니다."
 ---
 
 # Adversarial Review (General)

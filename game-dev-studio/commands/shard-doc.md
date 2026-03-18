@@ -1,6 +1,6 @@
 ---
 name: shard-doc
-description: "Split large markdown documents into smaller, organized files based on level 2 sections."
+description: "대용량 마크다운 문서를 레벨 2 섹션 기준으로 더 작은 파일들로 분할합니다."
 ---
 
 # Shard Document

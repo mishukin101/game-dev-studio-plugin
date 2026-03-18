@@ -1,6 +1,6 @@
 ---
 name: help
-description: "Analyzes what is done and offers advice on what to do next in the Game Dev Studio workflow."
+description: "Game Dev Studio 워크플로우에서 다음 단계를 분석하고 안내합니다."
 ---
 
 # Task: Game Dev Studio Help

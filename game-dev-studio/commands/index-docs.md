@@ -1,6 +1,6 @@
 ---
 name: index-docs
-description: "Generate or update an index.md to reference all docs in a target folder."
+description: "대상 폴더의 모든 문서를 참조하는 index.md를 생성하거나 업데이트합니다."
 ---
 
 # Index Docs

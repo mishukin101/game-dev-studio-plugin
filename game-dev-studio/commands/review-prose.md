@@ -1,6 +1,6 @@
 ---
 name: review-prose
-description: "Clinical copy-editor that reviews text for communication issues. Outputs fixes in a three-column table."
+description: "텍스트의 커뮤니케이션 문제를 검토하고 3열 표로 수정 제안을 출력합니다."
 ---
 
 # Editorial Review - Prose

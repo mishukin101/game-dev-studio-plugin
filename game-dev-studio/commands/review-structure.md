@@ -1,6 +1,6 @@
 ---
 name: review-structure
-description: "Structural editor that proposes cuts, reorganization, and simplification while preserving comprehension."
+description: "이해도를 유지하면서 삭제, 재구성, 단순화를 제안하는 구조적 편집 리뷰를 수행합니다."
 ---
 
 # Editorial Review - Structure
