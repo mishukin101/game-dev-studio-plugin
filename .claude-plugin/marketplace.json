@@ -7,7 +7,7 @@
     {
       "name": "game-dev-studio",
       "source": "./game-dev-studio",
-      "description": "AI-powered game development workflow plugin. Provides specialized agents (Game Architect, Designer, Developer, QA, Scrum Master, Solo Dev, Tech Writer) and workflows (brainstorming, game brief, GDD, tech spec, implementation) for end-to-end game development."
+      "description": "AI 기반 게임 개발 워크플로우 플러그인. 전문 에이전트(게임 아키텍트, 디자이너, 개발자, QA, 스크럼 마스터, 솔로 개발자, 테크니컬 라이터)와 워크플로우(브레인스토밍, 게임 브리프, GDD, 기술 사양서, 구현)를 통한 엔드투엔드 게임 개발을 지원합니다."
     }
   ]
 }
