@@ -87,6 +87,12 @@ Built on the [BMAD Method](https://github.com/bmad-code-org/bmad-method) platfor
 - **State tracking** — YAML frontmatter tracks progress with continuation support
 - **Collaborative discovery** — Agents facilitate, users decide
 
+## Attribution
+
+This plugin is built on the [BMAD Method](https://github.com/bmad-code-org/bmad-method) platform and includes components from [bmad-module-game-dev-studio](https://github.com/bmad-code-org/bmad-module-game-dev-studio) by BMad Code, LLC.
+
 ## License
 
-Apache-2.0
+MIT License — see [LICENSE](../LICENSE) for details.
+
+BMad™, BMAD-CORE™, BMAD-METHOD™ are trademarks of BMad Code, LLC.

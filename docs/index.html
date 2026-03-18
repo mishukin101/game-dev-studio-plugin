@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Dev Studio - 설치 및 사용 가이드</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-hover: #1c2129;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-dim: #1f6feb;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+      --purple: #bc8cff;
+      --cowork-bg: #1a1a1a;
+      --cowork-surface: #2a2a2a;
+      --cowork-border: #3a3a3a;
+      --cowork-text: #e0e0e0;
+      --cowork-muted: #888;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1e2e 100%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(88,166,255,0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(188,140,255,0.05) 0%, transparent 50%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Nav */
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .nav-btn:hover { color: var(--text); background: var(--surface-hover); }
+    .nav-btn.active {
+      color: var(--accent);
+      background: rgba(88,166,255,0.1);
+      border-color: rgba(88,166,255,0.3);
+    }
+
+    /* Container */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    /* Section */
+    .section { display: none; animation: fadeIn 0.3s ease; }
+    .section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-size: 1rem;
+    }
+
+    /* Step Cards */
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .step:hover { border-color: var(--accent-dim); }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .step-number.done { background: var(--green); }
+
+    .step-title { font-size: 1.1rem; font-weight: 600; flex: 1; }
+
+    .step-toggle {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .step.open .step-toggle { transform: rotate(180deg); }
+
+    .step-body {
+      display: none;
+      margin-top: 16px;
+      padding-left: 52px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .step.open .step-body { display: block; }
+    .step-body p { margin-bottom: 12px; }
+
+    .step-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .step-check input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+
+    .step-check label { cursor: pointer; color: var(--text); font-size: 0.9rem; }
+
+    /* ===================== */
+    /* Cowork UI Mockup      */
+    /* ===================== */
+    .mockup {
+      background: var(--cowork-bg);
+      border: 1px solid var(--cowork-border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 16px 0;
+      font-size: 0.82rem;
+      max-width: 520px;
+    }
+
+    .mockup-titlebar {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      gap: 2px;
+      border-bottom: 1px solid var(--cowork-border);
+      position: relative;
+    }
+
+    .mockup-tab {
+      padding: 4px 14px;
+      border-radius: 6px;
+      color: var(--cowork-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .mockup-tab.active {
+      background: var(--cowork-surface);
+      color: var(--cowork-text);
+    }
+
+    .mockup-body {
+      padding: 20px 16px;
+    }
+
+    .mockup-heading {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cowork-text);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .mockup-input-area {
+      background: var(--cowork-surface);
+      border: 1px solid var(--cowork-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .mockup-input-placeholder {
+      color: var(--cowork-muted);
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .mockup-input-bottom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--cowork-muted);
+    }
+
+    .mockup-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border: 1px solid var(--cowork-border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--cowork-muted);
+      font-size: 0.72rem;
+      cursor: default;
+    }
+
+    .mockup-btn-plus {
+      width: 22px;
+      height: 22px;
+      border: 1px solid var(--cowork-border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cowork-muted);
+      font-size: 0.85rem;
+      cursor: default;
+    }
+
+    /* Dropdown menu mockup */
+    .mockup-dropdown {
+      background: var(--cowork-surface);
+      border: 1px solid var(--cowork-border);
+      border-radius: 10px;
+      padding: 6px 0;
+      margin: 8px 0;
+      display: inline-block;
+      min-width: 180px;
+    }
+
+    .mockup-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      color: var(--cowork-text);
+      font-size: 0.8rem;
+      cursor: default;
+    }
+
+    .mockup-menu-item:hover { background: rgba(255,255,255,0.05); }
+
+    .mockup-menu-item .arrow {
+      margin-left: auto;
+      color: var(--cowork-muted);
+      font-size: 0.7rem;
+    }
+
+    .mockup-menu-item.highlight {
+      color: var(--orange);
+      font-weight: 500;
+    }
+
+    /* Sub dropdown */
+    .mockup-sub {
+      background: var(--cowork-surface);
+      border: 1px solid var(--cowork-border);
+      border-radius: 10px;
+      padding: 6px 0;
+      display: inline-block;
+      min-width: 170px;
+      vertical-align: top;
+    }
+
+    .mockup-menu-label {
+      font-size: 0.68rem;
+      color: var(--cowork-muted);
+      padding: 4px 14px 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Skill list mockup */
+    .mockup-skill-list {
+      background: var(--cowork-surface);
+      border: 1px solid var(--cowork-border);
+      border-radius: 10px;
+      padding: 6px 0;
+      display: inline-block;
+      min-width: 200px;
+    }
+
+    .mockup-skill-item {
+      padding: 5px 14px;
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      cursor: default;
+    }
+
+    .mockup-skill-item:hover { background: rgba(255,255,255,0.05); }
+
+    /* Dialog mockup */
+    .mockup-dialog {
+      background: var(--cowork-surface);
+      border: 1px solid var(--cowork-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 12px 0;
+      max-width: 440px;
+    }
+
+    .mockup-dialog-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--cowork-text);
+      margin-bottom: 12px;
+    }
+
+    .mockup-dialog-warn {
+      background: rgba(248,81,73,0.1);
+      border: 1px solid rgba(248,81,73,0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 0.78rem;
+      color: #f0a0a0;
+      line-height: 1.6;
+    }
+
+    .mockup-dialog-label {
+      font-size: 0.78rem;
+      color: var(--cowork-muted);
+      margin-bottom: 6px;
+    }
+
+    .mockup-dialog-input {
+      width: 100%;
+      background: var(--cowork-bg);
+      border: 1px solid var(--cowork-border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--cowork-text);
+      font-size: 0.82rem;
+      margin-bottom: 16px;
+    }
+
+    .mockup-dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .mockup-dialog-btn {
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: default;
+      border: 1px solid var(--cowork-border);
+      background: transparent;
+      color: var(--cowork-text);
+    }
+
+    .mockup-dialog-btn.primary {
+      background: var(--cowork-text);
+      color: var(--cowork-bg);
+      border-color: transparent;
+    }
+
+    /* Plugin card mockup */
+    .mockup-plugin-card {
+      background: var(--cowork-surface);
+      border: 1px solid var(--cowork-border);
+      border-radius: 10px;
+      padding: 16px;
+      margin: 8px 0;
+      max-width: 280px;
+    }
+
+    .mockup-plugin-icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .mockup-plugin-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--cowork-text);
+      margin-bottom: 2px;
+    }
+
+    .mockup-plugin-author {
+      font-size: 0.75rem;
+      color: var(--cowork-muted);
+      margin-bottom: 6px;
+    }
+
+    .mockup-plugin-desc {
+      font-size: 0.75rem;
+      color: var(--cowork-muted);
+      line-height: 1.5;
+    }
+
+    /* Tabs mockup inside dialog */
+    .mockup-tabs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--cowork-border);
+      padding-bottom: 8px;
+    }
+
+    .mockup-tabs span {
+      font-size: 0.8rem;
+      color: var(--cowork-muted);
+      cursor: default;
+      padding-bottom: 8px;
+    }
+
+    .mockup-tabs span.active {
+      color: var(--cowork-text);
+      border-bottom: 2px solid var(--cowork-text);
+    }
+
+    /* Flow indicator */
+    .flow-arrow {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin: 8px 0;
+    }
+
+    .mockup-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      white-space: pre;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    /* Callout */
+    .callout {
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.9rem;
+    }
+
+    .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .callout-info { background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.2); }
+    .callout-warn { background: rgba(210,153,34,0.1); border: 1px solid rgba(210,153,34,0.2); }
+    .callout-tip { background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.2); }
+
+    /* Agent/Workflow Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent-dim);
+      transform: translateY(-2px);
+    }
+
+    .card-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .card-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+    .card-desc { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; }
+
+    .card-tag {
+      display: inline-block;
+      background: rgba(88,166,255,0.1);
+      color: var(--accent);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    /* Workflow Timeline */
+    .timeline { position: relative; padding-left: 32px; margin: 20px 0; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item { position: relative; margin-bottom: 24px; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -32px;
+      top: 4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+    }
+
+    .timeline-title { font-weight: 600; margin-bottom: 4px; }
+    .timeline-desc { color: var(--text-muted); font-size: 0.88rem; }
+
+    /* Command table */
+    .cmd-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88rem; }
+    .cmd-table th { text-align: left; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-weight: 600; }
+    .cmd-table td { padding: 10px 12px; border: 1px solid var(--border); }
+    .cmd-table tr:hover td { background: var(--surface-hover); }
+    .cmd-name { font-family: 'SFMono-Regular', Consolas, monospace; color: var(--accent); font-size: 0.85rem; white-space: nowrap; }
+
+    /* Progress bar */
+    .progress-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .progress-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--purple));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text { color: var(--text-muted); font-size: 0.85rem; white-space: nowrap; }
+
+    /* Search */
+    .search-box {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .search-box::placeholder { color: var(--text-muted); }
+    .search-box:focus { border-color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 1.8rem; }
+      .hero { padding: 50px 16px 40px; }
+      .container { padding: 24px 16px 60px; }
+      .step-body { padding-left: 0; }
+      .card-grid { grid-template-columns: 1fr; }
+      .mockup-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-icon">🎮</div>
+      <h1>Game Dev Studio</h1>
+      <p>Claude Desktop(Cowork)에서 AI 기반 게임 개발 워크플로우를 사용하는 방법을 안내합니다</p>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <button class="nav-btn active" data-tab="install">📦 설치</button>
+    <button class="nav-btn" data-tab="agents">🤖 에이전트</button>
+    <button class="nav-btn" data-tab="workflows">⚡ 워크플로우</button>
+    <button class="nav-btn" data-tab="commands">💬 스킬 명령어</button>
+    <button class="nav-btn" data-tab="tips">💡 팁 & FAQ</button>
+  </nav>
+
+  <div class="container">
+
+    <!-- ========== 설치 ========== -->
+    <div class="section active" id="install">
+      <h2 class="section-title">📦 설치 가이드</h2>
+      <p class="section-desc">Claude Desktop(Cowork)에 Game Dev Studio 플러그인을 설치하는 단계별 안내입니다.</p>
+
+      <div class="progress-bar">
+        <span class="progress-text" id="progress-label">0 / 7 완료</span>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Step 1: 채팅 → Cowork 전환 -->
+      <div class="step open" data-step="1">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-1">1</div>
+          <div class="step-title">Claude Desktop 실행 후 Cowork 탭 전환</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>Claude Desktop 앱을 실행하면 기본적으로 <strong>"채팅"</strong> 탭이 표시됩니다. 상단 중앙의 탭 바에서 <strong>"Cowork"</strong>을 클릭하여 전환합니다.</p>
+
+          <!-- Mockup: Title bar -->
+          <div class="mockup" style="max-width: 280px;">
+            <div class="mockup-titlebar">
+              <span class="mockup-tab">채팅</span>
+              <span class="mockup-tab active">Cowork</span>
+              <span class="mockup-tab">코드</span>
+            </div>
+            <div class="mockup-body" style="text-align:center; padding: 16px;">
+              <div style="font-size: 1rem; font-weight: 700; color: var(--cowork-text);">할 일을 처리해 볼까요?</div>
+              <div style="font-size: 0.72rem; color: var(--cowork-muted); margin-top: 4px;">Cowork은 연구 프리뷰 단계입니다.</div>
+            </div>
+          </div>
+
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <span>Cowork은 Claude Pro, Team, Enterprise 플랜에서 사용 가능합니다. <strong>채팅</strong> 탭은 일반 Claude 대화, <strong>Cowork</strong> 탭은 플러그인/워크플로우 전용입니다.</span>
+          </div>
+          <div class="step-check">
+            <input type="checkbox" id="check-1" onchange="updateProgress()">
+            <label for="check-1">Cowork 탭으로 전환했습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: "+" 메뉴 → 플러그인 -->
+      <div class="step" data-step="2">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-2">2</div>
+          <div class="step-title">입력창 "+" 버튼 → 플러그인 메뉴 열기</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>Cowork 화면의 입력창에서 <strong>"폴더에서 작업"</strong> 옆의 <strong>"+"</strong> 버튼을 클릭합니다.</p>
+
+          <!-- Mockup: Input area -->
+          <div class="mockup" style="max-width: 420px;">
+            <div class="mockup-body" style="padding: 12px 16px;">
+              <div class="mockup-input-area">
+                <div class="mockup-input-placeholder">오늘 어떤 도움을 드릴까요?</div>
+                <div class="mockup-input-bottom">
+                  <span class="mockup-btn">📁 폴더에서 작업</span>
+                  <span class="mockup-btn-plus" style="background: var(--orange); color: #000; border-color: var(--orange); font-weight: 700;">+</span>
+                  <span style="margin-left: auto;">Opus 4.6 (100만 컨텍스트)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p>팝업 메뉴에서 <strong>"플러그인"</strong>을 선택합니다:</p>
+
+          <!-- Mockup: Dropdown menu -->
+          <div class="mockup-dropdown">
+            <div class="mockup-menu-item">📎 파일 또는 사진 추가 <span class="arrow">›</span></div>
+            <div class="mockup-menu-item">📁 프로젝트 포함 <span class="arrow">›</span></div>
+            <div class="mockup-menu-item">🔗 커넥터 <span class="arrow">›</span></div>
+            <div class="mockup-menu-item highlight">🧩 플러그인 <span class="arrow">›</span></div>
+          </div>
+
+          <div class="step-check">
+            <input type="checkbox" id="check-2" onchange="updateProgress()">
+            <label for="check-2">플러그인 메뉴를 열었습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: 플러그인 추가 선택 -->
+      <div class="step" data-step="3">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-3">3</div>
+          <div class="step-title">플러그인 관리 → 플러그인 추가</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p><strong>"플러그인"</strong>을 선택하면 서브 메뉴가 나타납니다. <strong>"플러그인 관리"</strong>를 클릭합니다.</p>
+
+          <!-- Mockup: Sub menu -->
+          <div class="mockup-row">
+            <div class="mockup-dropdown" style="min-width: 160px;">
+              <div class="mockup-menu-item highlight">🧩 플러그인 <span class="arrow">›</span></div>
+            </div>
+            <div class="mockup-sub">
+              <div class="mockup-menu-item">Product management <span class="arrow">›</span></div>
+              <div class="mockup-menu-item" style="font-weight: 600;">Game dev studio <span class="arrow">›</span></div>
+              <div style="height: 1px; background: var(--cowork-border); margin: 4px 0;"></div>
+              <div class="mockup-menu-item highlight">🔒 플러그인 관리</div>
+              <div class="mockup-menu-item">＋ 플러그인 추가</div>
+            </div>
+          </div>
+
+          <p style="margin-top: 12px;"><strong>"플러그인 탐색"</strong> 화면이 열리면 상단 탭에서 <strong>"개인"</strong>을 선택합니다.</p>
+
+          <!-- Mockup: Plugin discovery tabs -->
+          <div class="mockup" style="max-width: 440px;">
+            <div class="mockup-body">
+              <div style="font-size: 1.05rem; font-weight: 700; color: var(--cowork-text); margin-bottom: 4px;">플러그인 탐색</div>
+              <div style="font-size: 0.72rem; color: var(--cowork-muted); margin-bottom: 12px;">바로 사용할 수 있는 워크플로우로 Claude의 작업 수행 방식을 확장하세요.</div>
+              <div class="mockup-tabs">
+                <span>제공: Anthropic & Partners</span>
+                <span class="active">개인</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <span style="background: var(--orange); color: #000; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600;">game-dev-studio-plugins</span>
+                <span style="color: var(--cowork-muted); font-size: 0.7rem;">···</span>
+                <span class="mockup-btn-plus" style="font-size: 0.7rem; width: 18px; height: 18px;">+</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <span>이미 마켓플레이스가 추가되어 있다면 이 단계를 건너뛰고 Step 5로 이동하세요.</span>
+          </div>
+          <div class="step-check">
+            <input type="checkbox" id="check-3" onchange="updateProgress()">
+            <label for="check-3">플러그인 탐색 화면을 열었습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: GitHub 마켓플레이스 추가 -->
+      <div class="step" data-step="4">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-4">4</div>
+          <div class="step-title">GitHub에서 마켓플레이스 추가</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p><strong>"개인"</strong> 탭에서 <strong>"+"</strong> 버튼을 클릭하면 추가 옵션이 나타납니다. <strong>"GitHub에서 마켓플레이스 추가"</strong>를 선택합니다.</p>
+
+          <!-- Mockup: Add options -->
+          <div class="mockup-dropdown" style="min-width: 240px;">
+            <div class="mockup-menu-item highlight">🔄 GitHub에서 마켓플레이스 추가</div>
+            <div class="mockup-menu-item">🔗 URL로 마켓플레이스 추가</div>
+            <div class="mockup-menu-item">📤 플러그인 업로드</div>
+          </div>
+
+          <p style="margin-top: 12px;">URL 입력 다이얼로그가 나타나면 아래 주소를 입력하고 <strong>"동기화"</strong>를 클릭합니다:</p>
+
+          <!-- Mockup: Dialog -->
+          <div class="mockup-dialog">
+            <div class="mockup-dialog-title">GitHub에서 마켓플레이스 추가</div>
+            <div class="mockup-dialog-warn">
+              플러그인을 설치, 업데이트 또는 사용하기 전에 신뢰할 수 있는지 확인하세요. 마켓플레이스에서 설치한 플러그인은 Anthropic에서 관리하지 않으며, Anthropic은 의도한 대로 작동하거나 변경되지 않을 것임을 보증할 수 없습니다.
+            </div>
+            <div class="mockup-dialog-label">URL</div>
+            <div class="mockup-dialog-input">mishukin101/game-dev-studio-plugin</div>
+            <div class="mockup-dialog-actions">
+              <span class="mockup-dialog-btn">취소</span>
+              <span class="mockup-dialog-btn primary">동기화</span>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <code>mishukin101/game-dev-studio-plugin</code>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+          </div>
+
+          <div class="step-check">
+            <input type="checkbox" id="check-4" onchange="updateProgress()">
+            <label for="check-4">마켓플레이스를 추가했습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: 플러그인 설치 -->
+      <div class="step" data-step="5">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-5">5</div>
+          <div class="step-title">Game Dev Studio 플러그인 설치</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>"개인" 탭에 <strong>Game dev studio</strong> 카드가 나타납니다. 클릭하여 설치합니다.</p>
+
+          <!-- Mockup: Plugin card -->
+          <div class="mockup-plugin-card">
+            <div class="mockup-plugin-icon">💬</div>
+            <div class="mockup-plugin-name">Game dev studio</div>
+            <div class="mockup-plugin-author">sheldon101 작성</div>
+            <div class="mockup-plugin-desc">AI 기반 게임 개발 워크플로우 플러그인. 전문 에이전트(게임 아키텍트, 디자이너, 개발자, QA, 스크럼 마스터, 솔로 개발자, 테크니컬 라이터)와 워크플로우(브레인스토밍, 게임 브리프, GDD, 기술 사양서, 구현)...</div>
+          </div>
+
+          <p>설치가 완료되면 15개의 스킬 명령어가 자동으로 등록됩니다.</p>
+          <div class="step-check">
+            <input type="checkbox" id="check-5" onchange="updateProgress()">
+            <label for="check-5">플러그인을 설치했습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: 프로젝트 폴더 연결 -->
+      <div class="step" data-step="6">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-6">6</div>
+          <div class="step-title">프로젝트 폴더 연결</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>Cowork 입력창에서 <strong>"폴더에서 작업"</strong>을 클릭하고 게임 프로젝트 폴더를 선택합니다.</p>
+
+          <div class="mockup" style="max-width: 380px;">
+            <div class="mockup-body" style="padding: 12px 16px;">
+              <div class="mockup-input-area">
+                <div class="mockup-input-placeholder">스킬을 보려면 /를 입력하세요</div>
+                <div class="mockup-input-bottom">
+                  <span class="mockup-btn" style="border-color: var(--orange); color: var(--orange);">📁 폴더에서 작업</span>
+                  <span class="mockup-btn-plus">+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <span>프로젝트 폴더를 연결해야 코드 분석, 파일 생성 등 개발 워크플로우가 정상 동작합니다.</span>
+          </div>
+          <div class="step-check">
+            <input type="checkbox" id="check-6" onchange="updateProgress()">
+            <label for="check-6">프로젝트 폴더를 연결했습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7: 스킬 사용 -->
+      <div class="step" data-step="7">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" id="sn-7">7</div>
+          <div class="step-title">스킬 선택하여 사용하기</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p><strong>"+"</strong> → <strong>"플러그인"</strong> → <strong>"Game dev studio"</strong>를 선택하면 사용 가능한 스킬 목록이 나타납니다.</p>
+
+          <!-- Mockup: Full menu flow -->
+          <div class="mockup-row">
+            <div class="mockup-sub" style="min-width: 150px;">
+              <div class="mockup-menu-item">Product management <span class="arrow">›</span></div>
+              <div class="mockup-menu-item highlight">Game dev studio <span class="arrow">›</span></div>
+            </div>
+            <div class="mockup-skill-list">
+              <div class="mockup-skill-item">advanced-elicitation</div>
+              <div class="mockup-skill-item">brainstorm</div>
+              <div class="mockup-skill-item">create-game-brief</div>
+              <div class="mockup-skill-item">create-gdd</div>
+              <div class="mockup-skill-item">generate-project-context</div>
+              <div class="mockup-skill-item">help</div>
+              <div class="mockup-skill-item">index-docs</div>
+              <div class="mockup-skill-item">party-mode</div>
+              <div class="mockup-skill-item">quick-dev</div>
+            </div>
+          </div>
+
+          <p style="margin-top: 12px;">원하는 스킬을 클릭하면 해당 워크플로우가 시작됩니다. 또는 채팅창에 자연어로 요청할 수도 있습니다:</p>
+          <div class="code-block">
+            <code>게임 브리프를 만들어줘</code>
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+          </div>
+          <div class="step-check">
+            <input type="checkbox" id="check-7" onchange="updateProgress()">
+            <label for="check-7">스킬을 사용해봤습니다</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info" style="margin-top: 24px;">
+        <span class="callout-icon">🔄</span>
+        <span><strong>업데이트 방법:</strong> 현재 Cowork의 플러그인 자동 업데이트에 알려진 버그가 있습니다. 최신 버전을 적용하려면 플러그인 삭제 후 재설치를 권장합니다.</span>
+      </div>
+    </div>
+
+    <!-- ========== 에이전트 ========== -->
+    <div class="section" id="agents">
+      <h2 class="section-title">🤖 전문 에이전트</h2>
+      <p class="section-desc">각 개발 단계에 특화된 8명의 AI 에이전트가 게임 개발을 지원합니다.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🎲</div>
+          <div class="card-title">Samus Shepard</div>
+          <div class="card-desc">게임 디자이너 — 게임 메카닉, GDD 작성, 시스템 설계를 담당합니다. 열정적인 스트리머처럼 소통합니다.</div>
+          <span class="card-tag">디자인</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏛️</div>
+          <div class="card-title">Cloud Dragonborn</div>
+          <div class="card-desc">게임 아키텍트 — 기술 아키텍처, 시스템 설계, 프로젝트 컨텍스트를 담당합니다. RPG 현자처럼 차분하게 안내합니다.</div>
+          <span class="card-tag">기술</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🕹️</div>
+          <div class="card-title">Link Freeman</div>
+          <div class="card-desc">게임 개발자 — 기능 구현, 코드 리뷰, 스토리 개발을 담당합니다. 깔끔한 코드를 작성합니다.</div>
+          <span class="card-tag">구현</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧪</div>
+          <div class="card-title">GLaDOS</div>
+          <div class="card-desc">게임 QA 아키텍트 — 테스트 프레임워크, 테스트 설계, 성능 테스트, 품질 보증을 담당합니다.</div>
+          <span class="card-tag">QA</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Max</div>
+          <div class="card-desc">스크럼 마스터 — 스프린트 계획, 스토리 생성, 진행 관리, 회고를 담당합니다.</div>
+          <span class="card-tag">프로젝트 관리</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎮</div>
+          <div class="card-title">Indie</div>
+          <div class="card-desc">솔로 개발자 — 빠른 프로토타이핑, 기술 사양서 작성, 신속 개발에 특화되어 있습니다.</div>
+          <span class="card-tag">올라운드</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">📚</div>
+          <div class="card-title">Paige</div>
+          <div class="card-desc">테크니컬 라이터 — 기존 프로젝트 분석, 문서화를 담당합니다. 명확한 문서를 위해 노력합니다.</div>
+          <span class="card-tag">문서화</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title">Analyst</div>
+          <div class="card-desc">분석가 — 브레인스토밍 세션 진행, 아이디어 분석, 창의적 기법 활용을 담당합니다.</div>
+          <span class="card-tag">분석</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 워크플로우 ========== -->
+    <div class="section" id="workflows">
+      <h2 class="section-title">⚡ 개발 워크플로우</h2>
+      <p class="section-desc">게임 개발의 전체 라이프사이클을 단계별로 지원하는 워크플로우입니다.</p>
+
+      <h3 style="color: var(--accent); margin-bottom: 16px; font-size: 1.1rem;">🗺️ 개발 단계 흐름</h3>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot" style="border-color: var(--purple);">1</div>
+          <div class="timeline-title" style="color: var(--purple);">사전 제작 (Pre-production)</div>
+          <div class="timeline-desc">
+            <strong>브레인스토밍</strong> → <strong>게임 브리프</strong> 작성<br>
+            게임 컨셉 아이디어를 발산하고, 핵심 비전을 문서화합니다.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="border-color: var(--accent);">2</div>
+          <div class="timeline-title" style="color: var(--accent);">설계 (Design)</div>
+          <div class="timeline-desc">
+            <strong>GDD</strong> 작성 → <strong>내러티브 디자인</strong><br>
+            게임 메카닉, 시스템, 진행 구조와 스토리를 상세하게 설계합니다.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="border-color: var(--green);">3</div>
+          <div class="timeline-title" style="color: var(--green);">기술 설계 (Technical)</div>
+          <div class="timeline-desc">
+            <strong>프로젝트 컨텍스트</strong> → <strong>게임 아키텍처</strong> → <strong>테스트 프레임워크</strong><br>
+            기술 스택, 시스템 아키텍처, 테스트 인프라를 구축합니다.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="border-color: var(--orange);">4</div>
+          <div class="timeline-title" style="color: var(--orange);">제작 (Production)</div>
+          <div class="timeline-desc">
+            <strong>스프린트 계획</strong> → <strong>스토리 생성</strong> → <strong>개발</strong> → <strong>코드 리뷰</strong> → <strong>회고</strong><br>
+            실제 구현, 테스트, 배포까지의 반복 개발 사이클을 운영합니다.
+          </div>
+        </div>
+      </div>
+
+      <h3 style="color: var(--green); margin: 32px 0 16px; font-size: 1.1rem;">🚀 빠른 워크플로우 (언제든지 사용 가능)</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Quick Spec</div>
+          <div class="card-desc">대화형 탐색을 통해 구현 준비가 완료된 기술 사양서를 빠르게 작성합니다.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔨</div>
+          <div class="card-title">Quick Dev</div>
+          <div class="card-desc">기술 스펙 또는 직접 지시사항을 기반으로 유연한 개발 워크플로우를 실행합니다.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧪</div>
+          <div class="card-title">Quick Prototype</div>
+          <div class="card-desc">게임 메카닉과 아이디어를 빠르게 프로토타이핑하여 검증합니다.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <div class="card-title">Document Project</div>
+          <div class="card-desc">기존 프로젝트를 분석하여 유용한 문서를 자동으로 생성합니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 명령어 ========== -->
+    <div class="section" id="commands">
+      <h2 class="section-title">💬 스킬 명령어</h2>
+      <p class="section-desc">"+" → "플러그인" → "Game dev studio"에서 선택하거나, 자연어로 요청할 수 있습니다.</p>
+
+      <input type="text" class="search-box" placeholder="명령어 검색..." oninput="filterCommands(this.value)">
+
+      <table class="cmd-table" id="cmd-table">
+        <thead>
+          <tr>
+            <th>명령어</th>
+            <th>설명</th>
+            <th>단계</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="cmd-name">create-game-brief</td><td>단계별 협업 탐색을 통해 게임 비전을 정의하고 게임 브리프 문서를 작성합니다.</td><td>사전 제작</td></tr>
+          <tr><td class="cmd-name">brainstorm</td><td>다양한 창의적 기법과 아이디어 발상 방법을 활용한 인터랙티브 브레인스토밍 세션을 진행합니다.</td><td>사전 제작</td></tr>
+          <tr><td class="cmd-name">create-gdd</td><td>협업 탐색을 통해 포괄적인 게임 디자인 문서(GDD)를 작성합니다.</td><td>설계</td></tr>
+          <tr><td class="cmd-name">generate-project-context</td><td>AI 에이전트의 일관된 동작을 위한 최적화된 프로젝트 컨텍스트 파일을 생성합니다.</td><td>기술</td></tr>
+          <tr><td class="cmd-name">quick-spec</td><td>대화형 탐색을 통해 구현 준비가 완료된 기술 사양서를 작성합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">quick-dev</td><td>기술 스펙 또는 직접 지시사항을 기반으로 유연한 개발 워크플로우를 실행합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">help</td><td>Game Dev Studio 워크플로우에서 다음 단계를 분석하고 안내합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">party-mode</td><td>모든 Game Dev Studio 에이전트 간의 그룹 토론을 조율하는 멀티 에이전트 대화를 시작합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">index-docs</td><td>대상 폴더의 모든 문서를 참조하는 index.md를 생성하거나 업데이트합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">advanced-elicitation</td><td>LLM이 최근 출력을 재검토하고 정제하여 개선하도록 고급 도출 기법을 적용합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">review-adversarial</td><td>콘텐츠에 대한 비판적 리뷰를 수행하고 최소 10개의 문제점을 찾아 보고합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">review-edge-cases</td><td>모든 분기 경로와 경계 조건을 탐색하여 처리되지 않은 엣지 케이스만 보고합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">review-prose</td><td>텍스트의 커뮤니케이션 문제를 검토하고 3열 표로 수정 제안을 출력합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">review-structure</td><td>이해도를 유지하면서 삭제, 재구성, 단순화를 제안하는 구조적 편집 리뷰를 수행합니다.</td><td>전체</td></tr>
+          <tr><td class="cmd-name">shard-doc</td><td>대용량 마크다운 문서를 레벨 2 섹션 기준으로 더 작은 파일들로 분할합니다.</td><td>전체</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ========== 팁 & FAQ ========== -->
+    <div class="section" id="tips">
+      <h2 class="section-title">💡 팁 & FAQ</h2>
+      <p class="section-desc">자주 묻는 질문과 효과적인 사용 팁입니다.</p>
+
+      <div class="step open" data-step="faq1">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">어떤 게임 엔진을 지원하나요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p><strong>Unity, Unreal Engine, Godot</strong> 및 기타 엔진을 지원합니다. 설치 시 선택한 플랫폼에 맞춰 워크플로우가 최적화됩니다.</p>
+        </div>
+      </div>
+
+      <div class="step" data-step="faq2">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">처음 시작할 때 어떤 워크플로우부터 사용하면 좋을까요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>추천 순서:</p>
+          <p>1. <strong>brainstorm</strong> — 게임 아이디어 발산</p>
+          <p>2. <strong>create-game-brief</strong> — 게임 비전 정의</p>
+          <p>3. <strong>create-gdd</strong> — 상세 디자인 문서 작성</p>
+          <p>4. <strong>generate-project-context</strong> — 프로젝트 컨텍스트 생성</p>
+          <p>5. <strong>quick-dev</strong> — 구현 시작</p>
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <span>작은 프로젝트라면 <strong>quick-spec</strong> → <strong>quick-dev</strong>로 바로 시작해도 됩니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" data-step="faq3">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">party-mode는 무엇인가요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>모든 전문 에이전트가 하나의 대화에 참여하여 <strong>그룹 토론</strong>을 진행합니다. 각 에이전트가 자신의 전문 분야 관점에서 의견을 제시합니다.</p>
+          <p>예를 들어 "이 게임 컨셉이 기술적으로 가능한가?"라는 질문에 아키텍트, 개발자, QA, 디자이너가 각각 의견을 냅니다.</p>
+        </div>
+      </div>
+
+      <div class="step" data-step="faq4">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">help 명령어는 언제 사용하나요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>현재 프로젝트 상태를 분석하고 <strong>다음에 무엇을 해야 하는지</strong> 안내받을 때 사용합니다.</p>
+          <p>"다음에 뭘 해야 하지?" 또는 "지금 어떤 단계야?"라고 물어보면 됩니다.</p>
+        </div>
+      </div>
+
+      <div class="step" data-step="faq5">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">플러그인 업데이트는 어떻게 하나요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>현재 Cowork의 자동 업데이트에 알려진 버그가 있어, 다음 방법을 권장합니다:</p>
+          <p>1. <strong>플러그인 관리</strong>에서 game-dev-studio <strong>삭제</strong></p>
+          <p>2. 다시 마켓플레이스에서 <strong>재설치</strong></p>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <span>재설치해도 프로젝트 데이터나 생성된 문서에는 영향이 없습니다. 플러그인 자체만 갱신됩니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" data-step="faq6">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">출력 파일은 어디에 저장되나요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p>기본 출력 경로:</p>
+          <div class="code-block">
+            <code>{프로젝트 루트}/_bmad-output/</code>
+          </div>
+          <p>세부 경로:</p>
+          <p>• <strong>기획 문서:</strong> <code>_bmad-output/planning-artifacts/</code></p>
+          <p>• <strong>구현 결과물:</strong> <code>_bmad-output/implementation-artifacts/</code></p>
+          <p>• <strong>프로젝트 문서:</strong> <code>docs/</code></p>
+        </div>
+      </div>
+
+      <div class="step" data-step="faq7">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-number" style="background: var(--purple); font-size: 1rem;">?</div>
+          <div class="step-title">채팅 탭과 Cowork 탭의 차이는 무엇인가요?</div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          <p><strong>채팅</strong> — 일반적인 Claude AI 대화 (질문, 글쓰기, 코드 등)</p>
+          <p><strong>Cowork</strong> — 플러그인과 워크플로우를 사용한 구조화된 작업 수행. 프로젝트 폴더 연결, 스킬 실행 등이 가능합니다.</p>
+          <p>Game Dev Studio 플러그인은 <strong>Cowork 탭</strong>에서 사용합니다.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Tab navigation
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Step toggle
+    function toggleStep(header) {
+      const step = header.closest('.step');
+      step.classList.toggle('open');
+    }
+
+    // Copy code
+    function copyCode(btn) {
+      const code = btn.previousElementSibling.textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = '복사됨!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '복사';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Progress tracking
+    function updateProgress() {
+      const checks = document.querySelectorAll('#install input[type="checkbox"]');
+      const done = [...checks].filter(c => c.checked).length;
+      const total = checks.length;
+      const pct = (done / total) * 100;
+
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-label').textContent = `${done} / ${total} 완료`;
+
+      checks.forEach((check, i) => {
+        const sn = document.getElementById(`sn-${i + 1}`);
+        if (sn) {
+          if (check.checked) {
+            sn.classList.add('done');
+            sn.textContent = '✓';
+          } else {
+            sn.classList.remove('done');
+            sn.textContent = i + 1;
+          }
+        }
+      });
+    }
+
+    // Command search
+    function filterCommands(query) {
+      const rows = document.querySelectorAll('#cmd-table tbody tr');
+      const q = query.toLowerCase();
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
