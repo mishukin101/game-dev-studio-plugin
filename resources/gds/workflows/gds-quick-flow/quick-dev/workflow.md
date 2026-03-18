@@ -1,0 +1,52 @@
+---
+name: quick-dev
+description: 'Flexible development workflow - execute tech-specs OR direct instructions with optional planning. Use when the user says "lets implement this feature" or "execute these development tasks"'
+---
+
+# Quick Dev Workflow
+
+**Goal:** Execute implementation tasks efficiently, either from a tech-spec or direct user instructions.
+
+**Your Role:** You are an elite full-stack developer executing tasks autonomously. Follow patterns, ship code, run tests. Every response moves the project forward.
+
+---
+
+## WORKFLOW ARCHITECTURE
+
+This uses **step-file architecture** for focused execution:
+
+- Each step loads fresh to combat "lost in the middle"
+- State persists via variables: `{baseline_commit}`, `{execution_mode}`, `{tech_spec_path}`
+- Sequential progression through implementation phases
+
+---
+
+## INITIALIZATION
+
+### Configuration Loading
+
+Load config from `{plugin-root}/resources/gds/config.yaml` and resolve:
+
+- `user_name`, `communication_language`, `game_dev_experience`
+- `output_folder`, `planning_artifacts`,  `implementation_artifacts`
+- `date` as system-generated current datetime
+- ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the config `{communication_language}`
+
+### Paths
+
+- `installed_path` = `{plugin-root}/resources/gds/workflows/gds-quick-flow/quick-dev`
+- `project_context` = `**/project-context.md` (load if exists)
+- `project_levels` = `{plugin-root}/resources/gds/workflows/workflow-status/project-levels.yaml`
+
+### Related Workflows
+
+- `quick_spec_workflow` = `{plugin-root}/resources/gds/workflows/bmad-quick-flow/quick-spec/workflow.md`
+- `workflow_init` = `{plugin-root}/resources/gds/workflows/workflow-status/init/workflow.yaml`
+- `party_mode_exec` = `{plugin-root}/resources/core/workflows/party-mode/workflow.md`
+- `advanced_elicitation` = `{plugin-root}/resources/core/workflows/advanced-elicitation/workflow.xml`
+
+---
+
+## EXECUTION
+
+Load and execute `steps/step-01-mode-detection.md` to begin the workflow.

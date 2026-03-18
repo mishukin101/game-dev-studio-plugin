@@ -1,0 +1,18 @@
+{
+  "name": "game-dev-studio",
+  "version": "0.1.0",
+  "description": "Game Dev Studio - AI-powered game development workflow plugin. Provides specialized agents (Game Architect, Designer, Developer, QA, Scrum Master, Solo Dev, Tech Writer) and workflows (brainstorming, game brief, GDD, tech spec, implementation) for end-to-end game development.",
+  "author": "sheldon101",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/bmad-code-org/bmad-module-game-dev-studio",
+  "keywords": [
+    "game-development",
+    "game-design",
+    "gdd",
+    "brainstorming",
+    "unity",
+    "unreal",
+    "godot",
+    "bmad-method"
+  ]
+}
